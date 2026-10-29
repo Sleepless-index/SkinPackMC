@@ -21,8 +21,6 @@ A fully client-side Minecraft Bedrock skin pack creation tool. Preview skins and
 ## Running it
 
 - **Easiest:** double-click `index.html`.
-- **Windows:** double-click `Start.bat` (starts a tiny local server and opens the page; falls back to opening `index.html` if Node.js isn't installed).
-- **Mac/Linux:** run `start.command`, or `node serve.mjs`.
 
 ```
 node test-zip.mjs # Run the zip generator self-test
