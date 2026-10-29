@@ -1,0 +1,112 @@
+diff -urN a/index.html b/index.html
+--- a/index.html	2026-10-29 08:36:52.006320053 +0000
++++ b/index.html	2026-10-29 08:36:52.008607963 +0000
+@@ -27,18 +27,26 @@
+     .hidden { display: none !important; }
+ 
+     /* ---- Buttons: rounded squares instead of pills ---- */
+-    mdui-button { --shape-corner: 10px; }
++    mdui-button { --shape-corner: 8px; }
++    mdui-button > svg[slot] { width: 1.125rem; height: 1.125rem; }
+ 
+     /* ---- Pack popover (top-left) ---- */
+     #packBtnLabel { display: inline-block; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
+-    .pack-panel { width: min(380px, calc(100vw - 32px)); padding: 20px; display: flex; flex-direction: column; gap: 16px; }
++    .pack-panel {
++      position: fixed; inset: auto; margin: 0; width: min(380px, calc(100vw - 24px));
++      padding: 20px; border: 0; border-radius: 16px; overflow: visible;
++      background: rgb(var(--mdui-color-surface-container-high)); color: rgb(var(--mdui-color-on-surface));
++      box-shadow: var(--mdui-elevation-level3);
++    }
++    .pack-panel:popover-open { display: flex; flex-direction: column; gap: 16px; }
+     .pack-panel h3 { margin: 0; font-size: 16px; font-weight: 600; }
+     .pack-panel mdui-text-field { width: 100%; }
++    .pack-panel mdui-button { width: 100%; height: 40px; }
+ 
+     /* ---- Action buttons ---- */
+     .head-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+-    .head-actions mdui-button { height: 44px; }
+-    .head-actions mdui-button::part(button) { padding-inline: 18px; font-weight: 600; }
++    .head-actions mdui-button { height: 36px; font-size: 13px; }
++    .head-actions mdui-button::part(button) { padding-inline: 14px; font-weight: 600; }
+     .pack-sep { height: 28px; margin: 0 2px; }
+     .export-btn {
+       --mdui-color-primary: var(--mdui-color-tertiary);
+@@ -142,18 +150,11 @@
+ </head>
+ <body>
+   <mdui-top-app-bar variant="small" scroll-behavior="elevate">
+-    <mdui-dropdown id="packDrop" placement="bottom-start" stay-open-on-click>
+-      <mdui-button id="packBtn" slot="trigger" variant="tonal" aria-label="Pack name and description">
+-        <svg slot="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z"/></svg>
+-        <span id="packBtnLabel">Pack details</span>
+-        <svg slot="end-icon" viewBox="0 0 24 24" fill="currentColor"><path d="m7 10 5 5 5-5z"/></svg>
+-      </mdui-button>
+-      <mdui-card slot="panel" variant="elevated" class="pack-panel">
+-        <h3>Pack details</h3>
+-        <mdui-text-field id="packName" variant="outlined" label="Pack name" helper="Also used as the .mcpack filename" placeholder="My Skin Pack" clearable></mdui-text-field>
+-        <mdui-text-field id="packDesc" variant="outlined" label="Description" helper="Optional" placeholder="A collection of my skins" clearable></mdui-text-field>
+-      </mdui-card>
+-    </mdui-dropdown>
++    <mdui-button id="packBtn" variant="tonal" aria-label="Pack name and description" aria-haspopup="dialog">
++      <svg slot="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z"/></svg>
++      <span id="packBtnLabel">Pack details</span>
++      <svg slot="end-icon" viewBox="0 0 24 24" fill="currentColor"><path d="m7 10 5 5 5-5z"/></svg>
++    </mdui-button>
+     <mdui-top-app-bar-title></mdui-top-app-bar-title>
+     <div slot="end" style="display:flex;align-items:center;gap:4px;">
+       <mdui-button-icon id="settingsBtn" aria-label="Settings" title="Settings">
+@@ -206,6 +207,17 @@
+ 
+   </div>
+ 
++  <!-- Pack popover (native popover: light-dismiss on outside click / Esc) -->
++  <div id="packPanel" popover class="pack-panel">
++    <h3>Pack details</h3>
++    <mdui-text-field id="packName" variant="outlined" label="Pack name" helper="Also used as the .mcpack filename" placeholder="My Skin Pack" clearable></mdui-text-field>
++    <mdui-text-field id="packDesc" variant="outlined" label="Description" helper="Optional" placeholder="A collection of my skins" clearable></mdui-text-field>
++    <mdui-button id="exportBtn2" variant="filled" class="export-btn" full-width>
++      <svg slot="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2z"/></svg>
++      Export .mcpack
++    </mdui-button>
++  </div>
++
+   <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.webp,.mcpack,.zip" multiple class="hidden">
+   <div class="drop-overlay">Drop skins or a pack to add them</div>
+ 
+@@ -291,6 +303,16 @@
+   function syncPackLabel() { $('packBtnLabel').textContent = $('packName').value.trim() || 'Pack details'; }
+   ['input', 'change', 'clear'].forEach((ev) => $('packName').addEventListener(ev, syncPackLabel));
+ 
++  const packPanel = $('packPanel');
++  function placePackPanel() {
++    const r = $('packBtn').getBoundingClientRect();
++    packPanel.style.top = (r.bottom + 8) + 'px';
++    packPanel.style.left = Math.max(12, r.left) + 'px';
++  }
++  $('packBtn').onclick = () => { placePackPanel(); packPanel.togglePopover(); };
++  packPanel.addEventListener('toggle', (e) => { if (e.newState === 'open') setTimeout(() => $('packName').focus(), 50); });
++  window.addEventListener('resize', () => { if (packPanel.matches(':popover-open')) placePackPanel(); });
++
+   /* ---------- Thumbnails (one hidden 3D renderer snapshots every skin) ---------- */
+   let thumbViewer = null;
+   let thumbQueue = Promise.resolve();
+@@ -602,7 +624,7 @@
+     return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+   }
+ 
+-  $('exportBtn').onclick = async () => {
++  async function exportPack() {
+     if (!state.skins.length) { mdui.snackbar({ message: 'Please add at least one skin first' }); return; }
+     const packName = $('packName').value.trim() || 'My Skin Pack';
+     $('packName').value = packName;
+@@ -653,7 +675,8 @@
+     a.click();
+     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+     mdui.snackbar({ message: `Exported ${packName}.mcpack — if the filename becomes .zip, rename it back to .mcpack` });
+-  };
++  }
++  $('exportBtn').onclick = $('exportBtn2').onclick = exportPack;
+ 
+   /* ---------- Import pack ---------- */
+   async function importPackBytes(bytes, filename) {
