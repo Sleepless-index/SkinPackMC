@@ -1,5 +1,4 @@
 // Tiny local web server (optional — index.html also works by just double-clicking it).
-// Running it also enables importing skins from NameMC links and usernames via Mojang's official API.
 // Usage: node serve.mjs      -> opens http://localhost:8080 in your browser
 // HTTPS is only used if you provide certificates via SSL_KEY / SSL_CERT env vars.
 import http from 'http';
@@ -8,7 +7,6 @@ import fs from 'fs';
 import path from 'path';
 import { exec } from 'child_process';
 import { fileURLToPath } from 'url';
-import { lookupSkin } from './skin-lookup.mjs';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const types = {
@@ -16,21 +14,7 @@ const types = {
   '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.json': 'application/json',
 };
 
-// GET /api/skin?q=<username | NameMC skin/profile link> -> PNG (name in X-Skin-Name header)
-const apiSkin = async (req, res) => {
-  const q = new URL(req.url, 'http://localhost').searchParams.get('q') || '';
-  try {
-    const { buf, name } = await lookupSkin(q);
-    res.writeHead(200, { 'Content-Type': 'image/png', 'X-Skin-Name': encodeURIComponent(name), 'Cache-Control': 'no-store' });
-    res.end(buf);
-  } catch (e) {
-    res.writeHead(e.status || 502, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: e.message || 'Lookup failed' }));
-  }
-};
-
 const handler = (req, res) => {
-  if (req.url.startsWith('/api/skin')) return apiSkin(req, res);
   const rel = req.url === '/' ? 'index.html' : decodeURIComponent(req.url.split('?')[0]);
   const file = path.join(root, rel);
   if (!file.startsWith(root)) { res.writeHead(403); return res.end(); }
