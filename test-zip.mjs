@@ -54,3 +54,9 @@ assert.doesNotMatch(indexHtml, /skinpack\.\$\{loc\}\.skin_/, '皮肤名称语言
 assert.match(indexHtml, /name: 'pack_icon\.png'/, '导出应包含固定封面图');
 assert.ok(require('fs').existsSync(new URL('./static/pack_icon.png', import.meta.url)), '固定封面图应存在');
 console.log('test-zip: 皮肤包语言键与固定封面图约定通过 ✓');
+
+// 6) static/js/pack-icon.js must mirror static/pack_icon.png (run `node build-pack-icon.mjs` after changing the icon).
+const iconB64 = require('fs').readFileSync(new URL('./static/pack_icon.png', import.meta.url)).toString('base64');
+const iconJs = require('fs').readFileSync(new URL('./static/js/pack-icon.js', import.meta.url), 'utf8');
+assert.ok(iconJs.includes(`"${iconB64}"`), 'pack-icon.js is out of date — run: node build-pack-icon.mjs');
+console.log('test-zip: pack-icon.js is in sync with pack_icon.png ✓');

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="./static/nekoskin.png">
+  <link rel="apple-touch-icon" href="./static/nekoskin.png">
   <title>Minecraft Skin Pack Creator — Build .mcpack files online</title>
   <meta name="description" content="Free online Minecraft Bedrock skin pack creator: 3D preview grid, Slim/Classic auto-detect, import by Java username, export .mcpack. Runs entirely in your browser — no uploads.">
   <meta name="theme-color" content="#00000000">
@@ -28,6 +29,58 @@
       --app-font: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
                   Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
       --mdui-font-family: var(--app-font);
+      /* ---- Theme: neutral black & white, softened (no pure #fff / #000) ----
+         MDUI defines every colour as a -light and a -dark variant; overriding them here re-themes the whole UI.
+         Error colours are left at MDUI's defaults. */
+      --mdui-color-background-light: 241,241,243;                --mdui-color-background-dark: 24,24,27;
+      --mdui-color-on-background-light: 30,30,33;                --mdui-color-on-background-dark: 232,232,235;
+      --mdui-color-surface-light: 241,241,243;                   --mdui-color-surface-dark: 24,24,27;
+      --mdui-color-surface-dim-light: 217,217,221;               --mdui-color-surface-dim-dark: 18,18,20;
+      --mdui-color-surface-bright-light: 248,248,249;            --mdui-color-surface-bright-dark: 58,58,63;
+      --mdui-color-surface-container-lowest-light: 249,249,250;  --mdui-color-surface-container-lowest-dark: 19,19,22;
+      --mdui-color-surface-container-low-light: 235,235,238;     --mdui-color-surface-container-low-dark: 31,31,35;
+      --mdui-color-surface-container-light: 229,229,232;         --mdui-color-surface-container-dark: 37,37,41;
+      --mdui-color-surface-container-high-light: 223,223,227;    --mdui-color-surface-container-high-dark: 45,45,50;
+      --mdui-color-surface-container-highest-light: 215,215,220; --mdui-color-surface-container-highest-dark: 55,55,60;
+      --mdui-color-surface-variant-light: 221,221,225;           --mdui-color-surface-variant-dark: 63,63,69;
+      --mdui-color-on-surface-light: 30,30,33;                   --mdui-color-on-surface-dark: 232,232,235;
+      --mdui-color-on-surface-variant-light: 82,82,88;           --mdui-color-on-surface-variant-dark: 180,180,187;
+      --mdui-color-outline-light: 118,118,125;                   --mdui-color-outline-dark: 132,132,140;
+      --mdui-color-outline-variant-light: 194,194,199;           --mdui-color-outline-variant-dark: 66,66,73;
+      --mdui-color-primary-light: 40,40,44;                      --mdui-color-primary-dark: 228,228,232;
+      --mdui-color-on-primary-light: 242,242,244;                --mdui-color-on-primary-dark: 32,32,36;
+      --mdui-color-primary-container-light: 214,214,219;         --mdui-color-primary-container-dark: 68,68,74;
+      --mdui-color-on-primary-container-light: 30,30,33;         --mdui-color-on-primary-container-dark: 232,232,235;
+      --mdui-color-secondary-light: 84,84,90;                    --mdui-color-secondary-dark: 200,200,206;
+      --mdui-color-on-secondary-light: 242,242,244;              --mdui-color-on-secondary-dark: 36,36,40;
+      --mdui-color-secondary-container-light: 212,212,217;       --mdui-color-secondary-container-dark: 64,64,70;
+      --mdui-color-on-secondary-container-light: 30,30,33;       --mdui-color-on-secondary-container-dark: 232,232,235;
+      --mdui-color-tertiary-light: 96,96,102;                    --mdui-color-tertiary-dark: 190,190,197;
+      --mdui-color-on-tertiary-light: 242,242,244;               --mdui-color-on-tertiary-dark: 36,36,40;
+      --mdui-color-tertiary-container-light: 208,208,213;        --mdui-color-tertiary-container-dark: 70,70,76;
+      --mdui-color-on-tertiary-container-light: 30,30,33;        --mdui-color-on-tertiary-container-dark: 232,232,235;
+      --mdui-color-inverse-surface-light: 46,46,50;              --mdui-color-inverse-surface-dark: 228,228,231;
+      --mdui-color-inverse-on-surface-light: 240,240,242;        --mdui-color-inverse-on-surface-dark: 40,40,44;
+      --mdui-color-inverse-primary-light: 196,196,202;           --mdui-color-inverse-primary-dark: 64,64,70;
+      --mdui-color-surface-tint-color-light: 40,40,44;           --mdui-color-surface-tint-color-dark: 228,228,232;
+
+      /* MDUI colour tokens are bare "r,g,b" triplets; wrap them so they work as CSS colours. */
+      --ui-error: rgb(var(--mdui-color-error));
+      --ui-error-container: rgb(var(--mdui-color-error-container));
+      --ui-on-error-container: rgb(var(--mdui-color-on-error-container));
+      --ui-on-primary-container: rgb(var(--mdui-color-on-primary-container));
+      --ui-on-secondary-container: rgb(var(--mdui-color-on-secondary-container));
+      --ui-on-surface: rgb(var(--mdui-color-on-surface));
+      --ui-on-surface-variant: rgb(var(--mdui-color-on-surface-variant));
+      --ui-outline: rgb(var(--mdui-color-outline));
+      --ui-outline-variant: rgb(var(--mdui-color-outline-variant));
+      --ui-primary: rgb(var(--mdui-color-primary));
+      --ui-primary-container: rgb(var(--mdui-color-primary-container));
+      --ui-secondary-container: rgb(var(--mdui-color-secondary-container));
+      --ui-surface: rgb(var(--mdui-color-surface));
+      --ui-surface-container: rgb(var(--mdui-color-surface-container));
+      --ui-surface-container-highest: rgb(var(--mdui-color-surface-container-highest));
+      --ui-surface-container-low: rgb(var(--mdui-color-surface-container-low));
     }
     html { font-family: var(--app-font); }
     body {
@@ -45,6 +98,16 @@
     mdui-top-app-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 10; }
     .page { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
     .hidden { display: none !important; }
+    .page > section { display: flex; flex-direction: column; gap: 16px; }
+
+    /* ---- Toolbar above the grid ---- */
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .toolbar-info { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .count-chip {
+      font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 999px; white-space: nowrap;
+      background: var(--ui-secondary-container); color: var(--ui-on-secondary-container);
+    }
+    .toolbar-hint { font-size: 13px; color: var(--ui-on-surface-variant); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
     /* Inline code — no more white box */
     code {
@@ -80,6 +143,9 @@
     #packBtn::part(button) { padding-inline: 16px; font-weight: 600; }
     #packBtnLabel { display: block; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+    /* The floating label of an outlined field pokes above the field; give the dialog body room so it is not clipped. */
+    #userDialog mdui-text-field { display: block; width: 100%; margin-top: 12px; }
+
     /* ---- Pack popover (top-left) ---- */
     .pack-panel {
       position: fixed; inset: auto; margin: 0; width: min(380px, calc(100vw - 24px));
@@ -99,18 +165,18 @@
     }
     .skin-card {
       position: relative; cursor: pointer; border-radius: 20px; overflow: hidden;
-      background: var(--mdui-color-surface-container);
-      border: 1px solid var(--mdui-color-outline-variant);
+      background: var(--ui-surface-container);
+      border: 1px solid var(--ui-outline-variant);
       display: flex; flex-direction: column; user-select: none; outline: none;
       transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
     }
     .skin-card:hover, .skin-card:focus-visible {
-      transform: translateY(-3px); border-color: var(--mdui-color-primary);
+      transform: translateY(-3px); border-color: var(--ui-primary);
       box-shadow: var(--mdui-elevation-level2);
     }
     .thumb {
       position: relative; width: 100%; aspect-ratio: 3 / 4;
-      background: radial-gradient(circle at 50% 35%, var(--mdui-color-surface-container-highest), var(--mdui-color-surface-container-low));
+      background: radial-gradient(circle at 50% 35%, var(--ui-surface-container-highest), var(--ui-surface-container-low));
       display: flex; align-items: center; justify-content: center;
     }
     .thumb img { width: 100%; height: 100%; object-fit: contain; image-rendering: auto; pointer-events: none; }
@@ -118,13 +184,13 @@
     .badges { position: absolute; top: 8px; left: 8px; display: flex; gap: 4px; flex-wrap: wrap; }
     .badge {
       font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px;
-      background: var(--mdui-color-secondary-container); color: var(--mdui-color-on-secondary-container);
+      background: var(--ui-secondary-container); color: var(--ui-on-secondary-container);
     }
-    .badge.warn { background: var(--mdui-color-error-container); color: var(--mdui-color-on-error-container); }
+    .badge.warn { background: var(--ui-error-container); color: var(--ui-on-error-container); }
     .edit-hint {
       position: absolute; right: 8px; top: 8px; width: 32px; height: 32px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      background: var(--mdui-color-surface); color: var(--mdui-color-on-surface);
+      background: var(--ui-surface); color: var(--ui-on-surface);
       opacity: 0; transition: opacity .15s;
     }
     .skin-card:hover .edit-hint, .skin-card:focus-visible .edit-hint { opacity: 1; }
@@ -133,20 +199,29 @@
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .add-card {
-      border: 2px dashed var(--mdui-color-outline); background: transparent;
+      border: 2px dashed var(--ui-outline); background: transparent;
       align-items: center; justify-content: center; gap: 10px; min-height: 260px;
-      color: var(--mdui-color-on-surface-variant); text-align: center; padding: 16px;
+      color: var(--ui-on-surface-variant); text-align: center; padding: 16px;
     }
     .add-card > div { text-align: center; line-height: 1.45; }
-    .add-card:hover, .add-card:focus-visible { color: var(--mdui-color-primary); }
+    .add-card:hover, .add-card:focus-visible { color: var(--ui-primary); }
 
     /* ---- Empty state ---- */
     .empty {
-      border: 2px dashed var(--mdui-color-outline); border-radius: 24px;
-      padding: 64px 24px; text-align: center; color: var(--mdui-color-on-surface-variant);
+      width: 100%; max-width: 760px; margin: 5vh auto 0;
+      border: 2px dashed var(--ui-outline-variant); border-radius: 28px;
+      background: var(--ui-surface-container-low);
+      padding: 48px 24px 40px; text-align: center; color: var(--ui-on-surface-variant);
       display: flex; flex-direction: column; align-items: center; gap: 16px;
     }
-    .empty h3 { margin: 0; font-size: 22px; font-weight: 500; color: var(--mdui-color-on-surface); }
+    .steps { list-style: none; margin: 8px 0 0; padding: 0; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .steps li { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--ui-on-surface-variant); }
+    .steps li span {
+      width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700;
+      background: var(--ui-primary-container); color: var(--ui-on-primary-container);
+    }
+    .steps li + li::before { content: ''; width: 18px; height: 2px; border-radius: 2px; background: var(--ui-outline-variant); margin-right: 2px; }
+    .empty h3 { margin: 0; font-size: 22px; font-weight: 500; color: var(--ui-on-surface); }
     .empty p { margin: 0; max-width: 460px; line-height: 1.6; text-align: center; }
     .empty .actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
@@ -191,87 +266,82 @@
     .edit-head h2 { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.3; }
     .edit-actions { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
     .edit-actions mdui-button { height: 36px; font-size: 13px; }
-    #delBtn { color: var(--mdui-color-error); }
+    .pill-toggle {
+      display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px 0 10px; border-radius: 18px;
+      border: 1px solid var(--ui-outline-variant); background: transparent; color: var(--ui-on-surface-variant);
+      font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+      transition: background-color .12s, color .12s;
+    }
+    .pill-toggle svg { width: 18px; height: 18px; fill: currentColor; }
+    .pill-toggle:hover { background: rgba(var(--mdui-color-on-surface), .08); }
+    .pill-toggle.active { background: var(--ui-secondary-container); color: var(--ui-on-secondary-container); border-color: transparent; }
+    .pill-toggle:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 2px; }
+    #delBtn { color: var(--ui-error); }
 
+    /* Desktop: [3D preview + name/model] | [pixel editor]. Phones: stacked, see the end of the editor CSS. */
     .edit-content {
-      display: flex; flex-direction: column; gap: 16px;
-      min-height: 0; flex: 0 1 auto;
+      display: grid; flex: 0 0 auto; min-height: 0;
+      grid-template-columns: minmax(240px, 5fr) minmax(0, 8fr);
+      grid-template-rows: minmax(0, 1fr) auto;
+      grid-template-areas: "view paint" "ctrl paint";
+      gap: 16px 22px;
     }
-
-    .edit-viewer-col {
-      flex: 0 1 auto; min-height: 0;
-      display: flex; flex-direction: column; gap: 8px;
-    }
+    .edit-viewer-col { grid-area: view; min-width: 0; display: flex; }
     .viewer-wrapper {
-      position: relative; width: 100%; min-height: 0;
+      position: relative; flex: 1; min-width: 0; min-height: 300px;
       user-select: none; -webkit-user-select: none;
     }
     .viewer-wrapper > mdui-button-icon {
       position: absolute; z-index: 2; top: 50%; transform: translateY(-50%);
-      width: 44px; height: 52px; border-radius: 12px !important;
+      width: 36px; height: 44px; border-radius: 12px !important;
       background: rgba(91, 100, 107, .84); color: #fff;
       backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
     }
     .viewer-wrapper > mdui-button-icon::part(button) { width: 100%; height: 100%; }
-    #prev { left: 12px; }
-    #next { right: 84px; }
+    #prev { left: 4px; }
+    #next { right: 4px; }
 
+    /* Transparent: the 3D view sits directly on the modal background. */
     .canvas-container {
-      width: 100%; height: clamp(300px, 56vh, 570px);
-      border-radius: 18px; overflow: hidden; position: relative;
-      background-color: #fff;
-      background-image:
-        linear-gradient(45deg, #f3f4f4 25%, transparent 25%),
-        linear-gradient(-45deg, #f3f4f4 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #f3f4f4 75%),
-        linear-gradient(-45deg, transparent 75%, #f3f4f4 75%);
-      background-size: 40px 40px;
-      background-position: 0 0, 0 20px, 20px -20px, -20px 0;
-      box-shadow: inset 0 0 0 1px rgba(80, 90, 96, .18);
+      position: relative; width: 100%; height: 100%; min-height: 300px;
+      border-radius: 18px; overflow: hidden; background: transparent;
     }
     .canvas-container canvas {
       display: block; width: 100%; height: 100%;
       touch-action: none; /* drag rotates, doesn't scroll the page */
     }
 
-    .viewer-tools {
-      position: absolute;
-      top: 16px; right: 16px; z-index: 3;
-      display: flex; flex-direction: column; gap: 12px;
-    }
+    .viewer-tools { position: absolute; top: 8px; right: 8px; z-index: 3; display: flex; flex-direction: column; gap: 8px; }
     .viewer-tool {
-      width: 56px; height: 56px; padding: 0; border: 0; border-radius: 12px;
+      width: 36px; height: 36px; padding: 0; border: 0; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
-      color: #fff; background: #707980; cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, .14);
+      color: #fff; background: rgba(91, 100, 107, .84); cursor: pointer;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
       transition: background-color .15s, transform .15s;
     }
-    .viewer-tool:hover { background: #59636a; transform: translateY(-1px); }
+    .viewer-tool:hover { background: #59636a; }
     .viewer-tool:active { transform: scale(.94); }
-    .viewer-tool:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
-    .viewer-tool svg { width: 25px; height: 25px; fill: currentColor; }
+    .viewer-tool:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 2px; }
+    .viewer-tool svg { width: 19px; height: 19px; fill: currentColor; }
     .viewer-tool .tool-pause.hidden, .viewer-tool .tool-play.hidden { display: none; }
 
-    .skin-warning { grid-column: 1 / -1; color: var(--mdui-color-error); font-size: 13px; text-align: left; }
+    .skin-warning { grid-column: 1 / -1; color: var(--ui-error); font-size: 13px; text-align: left; }
 
-    .edit-controls-col {
-      width: 100%; display: grid; grid-template-columns: minmax(180px, 1fr) minmax(250px, 1fr);
-      gap: 16px 24px; align-items: center; min-width: 0;
-    }
+    .edit-controls-col { grid-area: ctrl; width: 100%; min-width: 0; display: grid; grid-template-columns: 1fr; gap: 14px; align-items: center; }
     .control-group { display: flex; flex-direction: column; gap: 8px; }
-    .control-label { font-size: 14px; font-weight: 500; color: var(--mdui-color-on-surface); }
+    .control-label { font-size: 14px; font-weight: 500; color: var(--ui-on-surface); }
 
     #modelGroup { width: 100%; }
     #modelGroup mdui-segmented-button { flex: 1 1 0; min-width: 0; font-size: 13px; }
 
     /* ---- Misc ---- */
     .section-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .6px;
-      color: var(--mdui-color-on-surface-variant); margin-bottom: 8px; }
+      color: var(--ui-on-surface-variant); margin-bottom: 8px; }
     .drop-overlay {
       position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center;
-      background: color-mix(in srgb, var(--mdui-color-primary) 18%, transparent);
-      border: 4px dashed var(--mdui-color-primary); font-size: 24px; font-weight: 600;
-      color: var(--mdui-color-primary); pointer-events: none; backdrop-filter: blur(2px);
+      background: color-mix(in srgb, var(--ui-primary) 18%, transparent);
+      border: 4px dashed var(--ui-primary); font-size: 24px; font-weight: 600;
+      color: var(--ui-primary); pointer-events: none; backdrop-filter: blur(2px);
       text-align: center; padding: 24px;
     }
     body.dragging .drop-overlay { display: flex; }
@@ -298,22 +368,12 @@
         display: block; flex: 0 0 auto;
         width: 36px; height: 4px; margin: 6px auto 2px;
         border-radius: 999px;
-        background: var(--mdui-color-outline-variant);
+        background: var(--ui-outline-variant);
       }
       .edit-head h2 { font-size: 18px; }
       .edit-actions { gap: 2px; }
       .edit-actions mdui-button { height: 34px; font-size: 12px; }
 
-      .edit-content { gap: 12px; }
-      .canvas-container { height: clamp(230px, 42dvh, 380px); border-radius: 14px; }
-      .viewer-tools { top: 10px; right: 10px; gap: 8px; }
-      .viewer-tool { width: 44px; height: 44px; border-radius: 10px; }
-      .viewer-tool svg { width: 21px; height: 21px; }
-      #prev { left: 8px; }
-      #next { right: 62px; }
-      .viewer-wrapper > mdui-button-icon { width: 38px; height: 44px; }
-      .edit-controls-col { grid-template-columns: 1fr; gap: 12px; }
-      .edit-controls-col .section-label { margin-bottom: 4px; }
     }
 
     /* ---- Small phones ---- */
@@ -323,11 +383,6 @@
       #packBtnLabel { max-width: 92px; }
       .top-actions mdui-divider { display: none; }
       .edit-sheet { padding-inline: 14px; }
-      .canvas-container { height: clamp(210px, 38dvh, 320px); }
-      .viewer-tools { top: 8px; right: 8px; gap: 6px; }
-      .viewer-tool { width: 40px; height: 40px; }
-      #next { right: 56px; }
-      .viewer-wrapper > mdui-button-icon { width: 34px; height: 40px; }
     }
 
     /* ---- Landscape / very short screens ---- */
@@ -343,19 +398,96 @@
       .edit-overlay.open .edit-sheet { transform: none; }
       .sheet-handle { display: none; }
       .edit-head h2 { font-size: 17px; }
-      .edit-content { gap: 10px; }
-      .canvas-container { height: min(54dvh, calc(100dvh - 250px)); min-height: 170px; }
-      .viewer-tools { top: 8px; right: 8px; gap: 6px; }
-      .viewer-tool { width: 40px; height: 40px; }
-      .edit-controls-col { grid-template-columns: minmax(140px, 1fr) minmax(200px, 1fr); gap: 10px; }
+    }
+    /* ================================================================
+       PIXEL EDITOR
+       ================================================================ */
+    .paint-col { grid-area: paint; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+    .paint-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+    .ptool {
+      width: 40px; height: 40px; padding: 0; border: 0; border-radius: 10px; flex: none;
+      display: grid; place-items: center; cursor: pointer;
+      background: transparent; color: var(--ui-on-surface-variant);
+      transition: background-color .12s, color .12s;
+    }
+    .ptool svg { width: 22px; height: 22px; fill: currentColor; pointer-events: none; }
+    .ptool:hover:not(:disabled) { background: rgba(var(--mdui-color-on-surface), .08); }
+    .ptool.active { background: var(--ui-secondary-container); color: var(--ui-on-secondary-container); }
+    .ptool:disabled { opacity: .38; cursor: default; }
+    .ptool:focus-visible, .pal:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
+    .tool-sep { width: 1px; height: 24px; background: var(--ui-outline-variant); margin: 0 6px; flex: none; }
+    .tool-spacer { flex: 1 1 0; }
+    .color-swatch {
+      position: relative; width: 36px; height: 36px; flex: none; overflow: hidden;
+      border-radius: 10px; border: 2px solid var(--ui-outline); cursor: pointer;
+    }
+    .color-swatch input { position: absolute; inset: -8px; width: calc(100% + 16px); height: calc(100% + 16px); border: 0; padding: 0; background: none; cursor: pointer; }
+    .paint-palette { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pal { width: 22px; height: 22px; padding: 0; border-radius: 6px; border: 1px solid var(--ui-outline-variant); cursor: pointer; }
+    .pal.sel { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
+    .paint-stage {
+      position: relative; display: flex; overflow: auto; padding: 6px;
+      flex: none; height: clamp(260px, 62dvh, 520px); border-radius: 14px; overscroll-behavior: contain;
+      background: var(--ui-surface-container-highest);
+      box-shadow: inset 0 0 0 1px var(--ui-outline-variant);
+    }
+    .paint-stage canvas { display: block; flex: none; margin: auto; image-rendering: pixelated; touch-action: none; cursor: crosshair; border-radius: 2px; }
+    .paint-stage[data-tool="hand"] canvas, .paint-stage.space canvas { cursor: grab; }
+    .paint-stage.panning canvas { cursor: grabbing !important; }
+    .paint-status { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--ui-on-surface-variant); }
+    #paintPos { min-width: 56px; font-variant-numeric: tabular-nums; }
+    .zoom-ctrl { margin-left: auto; display: flex; align-items: center; gap: 2px; }
+    .zoom-ctrl .ptool { width: 32px; height: 32px; }
+    .zoom-ctrl .ptool svg { width: 18px; height: 18px; }
+    #zoomLabel { width: 40px; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    /* Narrow screens: stacked, with the 3D preview pinned to the top so you can watch it while painting. */
+    @media (max-width: 820px) {
+      .edit-content { display: flex; flex-direction: column; gap: 12px; }
+      .edit-viewer-col {
+        position: sticky; top: 0; z-index: 6; padding-bottom: 6px;
+        background: rgb(var(--mdui-color-surface-container-high));
+      }
+      .viewer-wrapper { min-height: 0; }
+      .canvas-container { height: clamp(170px, 27dvh, 250px); min-height: 0; border-radius: 14px; }
+      .paint-stage { height: clamp(240px, 46dvh, 420px); }
+      .ptool { width: 38px; height: 38px; }
+      .pal { width: 26px; height: 26px; }
+    }
+
+    /* Pixel editor hidden: just the 3D preview + settings, centred. */
+    .edit-content[data-paint="off"] { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; grid-template-areas: "view" "ctrl"; }
+    .edit-content[data-paint="off"] .paint-col { display: none; }
+    .edit-content[data-paint="off"] .viewer-wrapper, .edit-content[data-paint="off"] .canvas-container { min-height: min(440px, 50dvh); }
+    @media (min-width: 821px) { .edit-sheet.compact { width: min(560px, 100%); } }
+    @media (max-width: 820px) { .edit-content[data-paint="off"] .canvas-container { height: clamp(260px, 46dvh, 440px); } }
+    @media (max-width: 640px) { .pill-toggle { width: 36px; padding: 0; justify-content: center; } .pill-toggle span { display: none; } }
+
+    /* Short landscape screens: keep the toolbar and canvas on screen. */
+    @media (max-height: 480px) {
+      .viewer-wrapper, .canvas-container { min-height: 190px; }
+      .paint-stage { height: max(150px, calc(100dvh - 205px)); }
+    }
+
+    /* ---- Accessibility / small screens ---- */
+    .skin-card:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      .skin-card, .edit-overlay, .edit-sheet, .viewer-tool { transition: none !important; }
+      .skin-card:hover, .skin-card:focus-visible { transform: none; }
+    }
+    @media (max-width: 640px) {
+      .toolbar-hint { display: none; }
+      .empty { margin-top: 2vh; padding: 32px 16px 28px; }
+      .steps { flex-direction: column; align-items: flex-start; }
+      .steps li + li::before { display: none; }
     }
   </style>
 </head>
 <body>
   <mdui-top-app-bar variant="small" scroll-behavior="elevate">
-    <mdui-button id="packBtn" variant="tonal" aria-label="Details" aria-haspopup="dialog">
-      <svg slot="icon" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px;"><path d="M20 6h-8l-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z"/></svg>
-      <span id="packBtnLabel">Details</span>
+    <mdui-button id="packBtn" variant="tonal" aria-label="Export" aria-haspopup="dialog">
+      <svg slot="icon" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2z"/></svg>
+      <span id="packBtnLabel">Export</span>
     </mdui-button>
     <mdui-top-app-bar-title style="flex-grow: 1; min-width: 0;"></mdui-top-app-bar-title>
     <div class="top-actions">
@@ -378,12 +510,17 @@
   <div class="page">
     <section>
       <div id="empty" class="empty">
-        <svg viewBox="0 0 24 24" width="56" height="56" fill="currentColor" aria-hidden="true"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
-        <h3>No skins yet</h3>
         <p>Drag &amp; drop skin PNGs (or an existing <code>.mcpack</code>) anywhere on this page, or use the buttons below.</p>
         <div class="actions">
           <mdui-button id="emptyAdd" variant="filled">Choose files</mdui-button>
           <mdui-button id="emptyUser" variant="outlined">Import from Java username</mdui-button>
+        </div>
+        <ol class="steps"><li><span>1</span>Add skins</li><li><span>2</span>Name your pack</li><li><span>3</span>Export .mcpack</li></ol>
+      </div>
+      <div id="toolbar" class="toolbar hidden">
+        <div class="toolbar-info">
+          <span id="skinCount" class="count-chip">0 skins</span>
+          <span id="exportHint" class="toolbar-hint"></span>
         </div>
       </div>
       <div id="grid" class="grid hidden"></div>
@@ -392,7 +529,7 @@
 
   <!-- Details popover -->
   <div id="packPanel" popover class="pack-panel">
-    <h3>Details</h3>
+    <h3>Export pack</h3>
     <mdui-text-field id="packName" variant="outlined" label="Pack name" helper="Also used as the .mcpack filename" placeholder="My Skin Pack" clearable></mdui-text-field>
     <mdui-button id="exportBtn2" variant="filled" class="export-btn" full-width>
       <svg slot="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2z"/></svg>
@@ -411,6 +548,10 @@
       <div class="edit-head">
         <h2 id="editTitle">Edit skin</h2>
         <div class="edit-actions">
+          <button id="paintToggle" class="pill-toggle active" type="button" aria-pressed="true" aria-label="Pixel editor" title="Show or hide the pixel editor">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37-1.34-1.34a.996.996 0 0 0-1.41 0L9 12.25 11.75 15l8.96-8.96a.996.996 0 0 0 0-1.41z"/></svg>
+            <span>Pixel editor</span>
+          </button>
           <mdui-button-icon id="delBtn" aria-label="Delete skin" title="Delete skin">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"/></svg>
           </mdui-button-icon>
@@ -419,7 +560,7 @@
       </div>
 
       <div class="edit-content">
-        <!-- Preview stage -->
+        <!-- 3D preview -->
         <div class="edit-viewer-col">
           <div class="viewer-wrapper">
             <mdui-button-icon id="prev" aria-label="Previous skin">
@@ -439,6 +580,38 @@
             <mdui-button-icon id="next" aria-label="Next skin">
               <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
             </mdui-button-icon>
+          </div>
+        </div>
+
+        <!-- Pixel editor -->
+        <div class="paint-col">
+          <div class="paint-toolbar" id="paintToolbar" role="toolbar" aria-label="Pixel editor tools">
+            <button class="ptool active" data-tool="pencil" aria-pressed="true" title="Pencil (B)" aria-label="Pencil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+            <button class="ptool" data-tool="eraser" aria-pressed="false" title="Eraser (E)" aria-label="Eraser"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.24 3.56 21.19 8.5c.78.79.78 2.05 0 2.84L12 20.53c-1.56 1.56-4.09 1.56-5.66 0L2.81 17c-.78-.79-.78-2.05 0-2.84l10.6-10.6c.79-.78 2.05-.78 2.83 0zM4.22 15.58l3.54 3.53c.78.79 2.04.79 2.83 0l3.53-3.53-4.95-4.95-4.95 4.95z"/></svg></button>
+            <button class="ptool" data-tool="fill" aria-pressed="false" title="Fill a face (G)" aria-label="Fill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 11.5s-2 2.17-2 3.5c0 1.1.9 2 2 2s2-.9 2-2c0-1.33-2-3.5-2-3.5zM5.21 10 10 5.21 14.79 10H5.21zm11.35-1.06L7.62 0 6.21 1.41l2.38 2.38-5.15 5.15c-.59.56-.59 1.53 0 2.12l5.5 5.5c.29.29.68.44 1.06.44s.77-.15 1.06-.44l5.5-5.5c.59-.59.59-1.56 0-2.12zM2 20h20v4H2z"/></svg></button>
+            <button class="ptool" data-tool="picker" aria-pressed="false" title="Pick color (I)" aria-label="Color picker"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.35 11.72 17.22 13.85 15.81 12.43 8.1 20.14 3.5 22 2 20.5 3.86 15.9 11.57 8.19 10.15 6.78 12.28 4.65 19.35 11.72zM16.76 3c1.17-1.17 3.07-1.17 4.24 0s1.17 3.07 0 4.24L19.08 9.16 14.84 4.92 16.76 3zM5.56 17.03 4.5 19.5 6.97 18.44 14.4 11 13 9.6 5.56 17.03z"/></svg></button>
+            <button class="ptool" data-tool="hand" aria-pressed="false" title="Pan (H; or hold Space / middle mouse and drag)" aria-label="Pan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"/></svg></button>
+            <span class="tool-sep"></span>
+            <button class="ptool" id="undoBtn" title="Undo (Ctrl+Z)" aria-label="Undo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg></button>
+            <button class="ptool" id="redoBtn" title="Redo (Ctrl+Shift+Z)" aria-label="Redo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/></svg></button>
+            <span class="tool-sep"></span>
+            <label class="color-swatch" title="Color"><input type="color" id="paintColor" value="#000000" aria-label="Paint color"></label>
+            <span class="tool-spacer"></span>
+            <button class="ptool active" id="gridBtn" aria-pressed="true" title="Pixel grid" aria-label="Toggle pixel grid"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8 20H4v-4h4v4zm0-6H4v-4h4v4zm0-6H4V4h4v4zm6 12h-4v-4h4v4zm0-6h-4v-4h4v4zm0-6h-4V4h4v4zm6 12h-4v-4h4v4zm0-6h-4v-4h4v4zm0-6h-4V4h4v4z"/></svg></button>
+            <button class="ptool active" id="guideBtn" aria-pressed="true" title="Body-part guide" aria-label="Toggle body-part guide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.51 3.08 3.08 19.51c.09.34.27.65.51.9.25.24.56.42.9.51L20.93 4.49c-.19-.69-.73-1.23-1.42-1.41zM11.88 3 3 11.88v2.83L14.71 3h-2.83zM5 3c-1.1 0-2 .9-2 2v2l4-4H5zm14 18c.55 0 1.05-.22 1.41-.59.37-.36.59-.86.59-1.41v-2l-4 4h2zm-9.71 0h2.83L21 12.12V9.29L9.29 21z"/></svg></button>
+          </div>
+          <div class="paint-palette" id="paintPalette" aria-label="Colors"></div>
+          <div class="paint-stage" id="paintStage" data-tool="pencil">
+            <canvas id="paintCanvas" aria-label="Skin texture editor"></canvas>
+          </div>
+          <div class="paint-status">
+            <span id="paintInfo"></span>
+            <span id="paintPos"></span>
+            <div class="zoom-ctrl">
+              <button class="ptool" id="zoomOut" title="Zoom out" aria-label="Zoom out"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13H5v-2h14v2z"/></svg></button>
+              <span id="zoomLabel">6×</span>
+              <button class="ptool" id="zoomIn" title="Zoom in (or scroll wheel)" aria-label="Zoom in"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg></button>
+            </div>
           </div>
         </div>
 
@@ -507,7 +680,10 @@
   };
 
   /* ---------- Pack popover ---------- */
-  function syncPackLabel() { $('packBtnLabel').textContent = $('packName').value.trim() || 'Details'; }
+  function syncPackLabel() {
+    const name = $('packName').value.trim();
+    $('exportHint').textContent = `Exports as ${name || 'My Skin Pack'}.mcpack`;
+  }
   ['input', 'change', 'clear'].forEach((ev) => $('packName').addEventListener(ev, syncPackLabel));
 
   const packPanel = $('packPanel');
@@ -604,6 +780,8 @@
     const has = state.skins.length > 0;
     $('empty').classList.toggle('hidden', has);
     grid.classList.toggle('hidden', !has);
+    $('toolbar').classList.toggle('hidden', !has);
+    $('skinCount').textContent = `${state.skins.length} skin${state.skins.length === 1 ? '' : 's'}`;
 
     state.skins.forEach((s, i) => {
       const card = document.createElement('div');
@@ -707,7 +885,7 @@
     });
     liveViewerResizeObserver.observe(canvasContainer);
 
-    liveViewer.zoom = 0.6;
+    liveViewer.zoom = 0.9;
     setLiveAnimation();
     return liveViewer;
   }
@@ -738,6 +916,7 @@
     $('prev').disabled = state.sel <= 0;
     $('next').disabled = state.sel >= state.skins.length - 1;
     loadLive();
+    paintLoad();
   }
 
   function openEditor(i) {
@@ -773,9 +952,349 @@
     const slim = (e.target.value || $('modelGroup').value) === 'slim';
     if (s.slim === slim) return;
     s.slim = slim;
+    refreshGuides();
     loadLive();
     queueThumb(s);
   });
+
+  /* ---------- Pixel editor (texture painting) ---------- */
+  const P = {
+    cv: $('paintCanvas'), stage: $('paintStage'),
+    tex: document.createElement('canvas'),         // the skin texture being edited (native size)
+    bg: document.createElement('canvas'),          // cached checkerboard + body-part guide
+    gridCv: document.createElement('canvas'),      // cached pixel grid
+    scale: 6, userZoomed: false,
+    tool: 'pencil', paintTool: 'pencil', color: '#000000',
+    grid: true, guide: true,
+    faces: [], undo: [], redo: [], pre: null, changed: false,
+    drawing: false, last: null, hover: null, pan: null, token: 0, space: false, open: true,
+  };
+  P.ctx = P.cv.getContext('2d');
+  P.tctx = P.tex.getContext('2d', { willReadFrequently: true });
+
+  const FACE_COLORS = { top: '#e3eef6', bottom: '#69717d', right: '#86dc86', front: '#66b3f0', left: '#ea8a8a', back: '#f1d664' };
+  const DEFAULT_PALETTE = ['#000000', '#ffffff', '#e53935', '#fb8c00', '#fdd835', '#43a047', '#1e88e5', '#8e24aa', '#6d4c41', '#9e9e9e'];
+  let palette = DEFAULT_PALETTE.slice();
+  try { const saved = JSON.parse(localStorage.getItem('skinpack.palette')); if (Array.isArray(saved) && saved.length) palette = saved; } catch (e) { /* storage unavailable */ }
+
+  /* -- UV layout: where each body part lives in the texture (64-unit coordinates, scaled for HD skins) -- */
+  function buildGuides() {
+    const s = current(); const w = P.tex.width, h = P.tex.height, k = w / 64;
+    const aw = s && s.slim ? 3 : 4;
+    // [x, y, width, height, depth, layer]  layer 0 = base, 1 = outer layer (hat, jacket, sleeves, pants)
+    const boxes = [
+      [0, 0, 8, 8, 8, 0], [32, 0, 8, 8, 8, 1],               // head, hat
+      [16, 16, 8, 12, 4, 0], [16, 32, 8, 12, 4, 1],           // body, jacket
+      [40, 16, aw, 12, 4, 0], [40, 32, aw, 12, 4, 1],         // right arm, sleeve
+      [0, 16, 4, 12, 4, 0], [0, 32, 4, 12, 4, 1],             // right leg, pants
+      [16, 48, 4, 12, 4, 0], [0, 48, 4, 12, 4, 1],            // left leg, pants
+      [32, 48, aw, 12, 4, 0], [48, 48, aw, 12, 4, 1],         // left arm, sleeve
+    ];
+    P.faces = [];
+    for (const [x, y, bw, bh, d, layer] of boxes) {
+      if ((y + d + bh) * k > h || (x + 2 * d + 2 * bw) * k > w) continue; // part doesn't exist in this texture size (e.g. 64x32)
+      const faces = {
+        top: [x + d, y, bw, d], bottom: [x + d + bw, y, bw, d],
+        right: [x, y + d, d, bh], front: [x + d, y + d, bw, bh], left: [x + d + bw, y + d, d, bh], back: [x + 2 * d + bw, y + d, bw, bh],
+      };
+      for (const [name, [fx, fy, fw, fh]] of Object.entries(faces)) {
+        P.faces.push({ name, layer, x: Math.round(fx * k), y: Math.round(fy * k), w: Math.round(fw * k), h: Math.round(fh * k) });
+      }
+    }
+  }
+  const faceAt = (x, y) => P.faces.find((f) => x >= f.x && y >= f.y && x < f.x + f.w && y < f.y + f.h) || null;
+
+  /* -- Rendering -- */
+  function sizeCanvas() {
+    const w = P.tex.width, h = P.tex.height, S = P.scale;
+    for (const c of [P.cv, P.bg, P.gridCv]) { c.width = w * S; c.height = h * S; }
+    P.cv.style.width = w * S + 'px'; P.cv.style.height = h * S + 'px';
+
+    const b = P.bg.getContext('2d');
+    for (let y = 0; y < h; y += 2) for (let x = 0; x < w; x += 2) {
+      b.fillStyle = ((x + y) / 2) % 2 ? '#2a2d32' : '#34373d';
+      b.fillRect(x * S, y * S, 2 * S, 2 * S);
+    }
+    if (P.guide) for (const f of P.faces) {
+      b.globalAlpha = f.layer ? 0.38 : 0.92; b.fillStyle = FACE_COLORS[f.name];
+      b.fillRect(f.x * S, f.y * S, f.w * S, f.h * S);
+    }
+    b.globalAlpha = 1;
+
+    if (P.grid) {
+      const g = P.gridCv.getContext('2d'); const major = Math.max(1, Math.round(8 * w / 64));
+      g.lineWidth = 1;
+      const line = (x1, y1, x2, y2, strong) => {
+        g.strokeStyle = strong ? 'rgba(255,255,255,.30)' : 'rgba(255,255,255,.10)';
+        g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke();
+      };
+      for (let x = 0; x <= w; x++) if (S >= 5 || x % major === 0) line(x * S + .5, 0, x * S + .5, h * S, x % major === 0);
+      for (let y = 0; y <= h; y++) if (S >= 5 || y % major === 0) line(0, y * S + .5, w * S, y * S + .5, y % major === 0);
+    }
+    $('zoomLabel').textContent = S + '×';
+  }
+
+  function redraw() {
+    const { ctx } = P, S = P.scale, w = P.tex.width, h = P.tex.height;
+    ctx.imageSmoothingEnabled = false;
+    ctx.clearRect(0, 0, w * S, h * S);
+    ctx.drawImage(P.bg, 0, 0);
+    ctx.drawImage(P.tex, 0, 0, w, h, 0, 0, w * S, h * S);
+    ctx.drawImage(P.gridCv, 0, 0);
+    if (P.hover && P.tool !== 'hand' && !P.space) {
+      const { x, y } = P.hover;
+      ctx.lineWidth = 1; ctx.strokeStyle = '#000'; ctx.strokeRect(x * S + .5, y * S + .5, S - 1, S - 1);
+      ctx.strokeStyle = '#fff'; ctx.strokeRect(x * S + 1.5, y * S + 1.5, S - 3, S - 3);
+    }
+  }
+
+  function fitScale() {
+    const w = P.tex.width, h = P.tex.height;
+    const availW = Math.max(120, P.stage.clientWidth - 14);
+    const availH = (P.stage.clientHeight || 520) - 14;   // the stage has a fixed height
+    const minScale = window.innerHeight <= 480 ? 4 : 2;   // short landscape screens: keep pixels tappable, pan if needed
+    return Math.max(minScale, Math.min(24, Math.floor(Math.min(availW / w, availH / h))));
+  }
+
+  function setScale(n, byUser, anchor) {   // anchor = {x, y} client point that stays put (cursor); default = centre of the view
+    n = Math.max(2, Math.min(32, n));
+    if (n === P.scale) return;
+    const st = P.stage, r = P.cv.getBoundingClientRect(), sr = st.getBoundingClientRect();
+    if (byUser) P.userZoomed = true;
+    if (!r.width) { P.scale = n; sizeCanvas(); redraw(); return; }   // editor hidden
+    const ax = anchor ? anchor.x : sr.left + sr.width / 2, ay = anchor ? anchor.y : sr.top + sr.height / 2;
+    const tx = (ax - r.left) / r.width, ty = (ay - r.top) / r.height;   // texture point under the anchor (0..1)
+    P.scale = n; sizeCanvas(); redraw();
+    const r2 = P.cv.getBoundingClientRect();
+    st.scrollLeft += r2.left + tx * r2.width - ax; st.scrollTop += r2.top + ty * r2.height - ay;
+  }
+
+  function refreshGuides() { buildGuides(); sizeCanvas(); redraw(); }
+
+  /* -- Load the current skin into the editor -- */
+  function paintLoad() {
+    const s = current(); if (!s) return;
+    const token = ++P.token;
+    const img = new Image();
+    img.onload = () => {
+      if (token !== P.token) return;
+      P.tex.width = img.naturalWidth; P.tex.height = img.naturalHeight;
+      P.tctx.clearRect(0, 0, P.tex.width, P.tex.height); P.tctx.drawImage(img, 0, 0);
+      P.undo = []; P.redo = []; P.drawing = false; P.userZoomed = false; P.hover = null;
+      buildGuides(); P.scale = fitScale(); sizeCanvas(); redraw();
+      P.stage.scrollLeft = P.stage.scrollTop = 0;
+      $('paintInfo').textContent = `${P.tex.width} × ${P.tex.height} px`; $('paintPos').textContent = '';
+      updateHistoryButtons();
+    };
+    img.src = s.url;
+  }
+
+  /* -- Saving edits back into the skin (so the grid thumbnail and the exported .mcpack pick them up) -- */
+  function canvasBytes(cv) {
+    const bin = atob(cv.toDataURL('image/png').split(',')[1]);
+    const u8 = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+    return u8;
+  }
+  function commitTexture() {
+    const s = current(); if (!s) return;
+    s.data = canvasBytes(P.tex);
+    URL.revokeObjectURL(s.url);
+    s.url = URL.createObjectURL(new Blob([s.data], { type: 'image/png' }));
+    queueThumb(s);
+  }
+  let liveRaf = 0;
+  function liveSync() {   // push the texture to the 3D preview while painting
+    if (liveRaf) return;
+    liveRaf = requestAnimationFrame(() => {
+      liveRaf = 0; const s = current();
+      if (liveViewer && s) liveViewer.loadSkin(P.tex, { model: s.slim ? 'slim' : 'default' });
+    });
+  }
+  const afterEdit = () => { redraw(); liveSync(); commitTexture(); };
+
+  /* -- History -- */
+  const snap = () => P.tctx.getImageData(0, 0, P.tex.width, P.tex.height);
+  function updateHistoryButtons() { $('undoBtn').disabled = !P.undo.length; $('redoBtn').disabled = !P.redo.length; }
+  function undo() { if (!P.undo.length) return; P.redo.push(snap()); P.tctx.putImageData(P.undo.pop(), 0, 0); afterEdit(); updateHistoryButtons(); }
+  function redo() { if (!P.redo.length) return; P.undo.push(snap()); P.tctx.putImageData(P.redo.pop(), 0, 0); afterEdit(); updateHistoryButtons(); }
+  $('undoBtn').onclick = undo; $('redoBtn').onclick = redo;
+
+  /* -- Tools -- */
+  const hexToRgb = (hex) => { const n = parseInt(hex.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  const rgbToHex = (r, g, b) => '#' + [r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('');
+
+  function putPixel(x, y) {
+    if (x < 0 || y < 0 || x >= P.tex.width || y >= P.tex.height) return;
+    if (P.tool === 'eraser') P.tctx.clearRect(x, y, 1, 1);
+    else { P.tctx.fillStyle = P.color; P.tctx.fillRect(x, y, 1, 1); }
+    P.changed = true;
+  }
+  function putLine(x0, y0, x1, y1) {   // Bresenham, so fast strokes leave no gaps
+    const dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+    let err = dx + dy;
+    for (;;) {
+      putPixel(x0, y0);
+      if (x0 === x1 && y0 === y1) break;
+      const e2 = 2 * err;
+      if (e2 >= dy) { err += dy; x0 += sx; }
+      if (e2 <= dx) { err += dx; y0 += sy; }
+    }
+  }
+  function floodFill(x, y) {   // fills the contiguous area, limited to the body-part face under the cursor
+    const w = P.tex.width, h = P.tex.height, img = P.tctx.getImageData(0, 0, w, h), d = img.data;
+    const f = faceAt(x, y), b = f || { x: 0, y: 0, w, h };
+    const i0 = (y * w + x) * 4, tr = d[i0], tg = d[i0 + 1], tb = d[i0 + 2], ta = d[i0 + 3];
+    const [r, g, bl] = hexToRgb(P.color);
+    if (ta === 255 && tr === r && tg === g && tb === bl) return false;
+    const match = (i) => (ta === 0 ? d[i + 3] === 0 : d[i] === tr && d[i + 1] === tg && d[i + 2] === tb && d[i + 3] === ta);
+    const seen = new Uint8Array(w * h), stack = [x, y];
+    while (stack.length) {
+      const cy = stack.pop(), cx = stack.pop();
+      if (cx < b.x || cy < b.y || cx >= b.x + b.w || cy >= b.y + b.h) continue;
+      const k = cy * w + cx; if (seen[k]) continue; seen[k] = 1;
+      const i = k * 4; if (!match(i)) continue;
+      d[i] = r; d[i + 1] = g; d[i + 2] = bl; d[i + 3] = 255;
+      stack.push(cx + 1, cy, cx - 1, cy, cx, cy + 1, cx, cy - 1);
+    }
+    P.tctx.putImageData(img, 0, 0); P.changed = true; return true;
+  }
+
+  function setTool(t) {
+    P.tool = t; if (t === 'pencil' || t === 'eraser' || t === 'fill') P.paintTool = t;
+    document.querySelectorAll('#paintToolbar [data-tool]').forEach((b) => {
+      const on = b.dataset.tool === t; b.classList.toggle('active', on); b.setAttribute('aria-pressed', on);
+    });
+    P.stage.dataset.tool = t; redraw();
+  }
+  document.querySelectorAll('#paintToolbar [data-tool]').forEach((b) => { b.onclick = () => setTool(b.dataset.tool); });
+
+  /* -- Colors -- */
+  function renderPalette() {
+    const box = $('paintPalette'); box.textContent = '';
+    palette.forEach((c) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'pal' + (c === P.color ? ' sel' : ''); b.style.background = c;
+      b.title = c; b.setAttribute('aria-label', 'Color ' + c); b.onclick = () => setColor(c);
+      box.appendChild(b);
+    });
+  }
+  function setColor(hex) { P.color = hex; $('paintColor').value = hex; renderPalette(); }
+  function rememberColor(hex) {
+    if (palette.includes(hex)) return;
+    palette = [hex, ...palette].slice(0, 16);
+    try { localStorage.setItem('skinpack.palette', JSON.stringify(palette)); } catch (e) { /* ignore */ }
+    renderPalette();
+  }
+  $('paintColor').addEventListener('input', (e) => setColor(e.target.value));
+  $('paintColor').addEventListener('change', (e) => rememberColor(e.target.value));
+  renderPalette();
+
+  /* -- Pointer input (mouse, pen and touch) -- */
+  function pixelAt(e) {
+    const r = P.cv.getBoundingClientRect();
+    const x = Math.floor((e.clientX - r.left) / r.width * P.tex.width), y = Math.floor((e.clientY - r.top) / r.height * P.tex.height);
+    return { x, y, inside: x >= 0 && y >= 0 && x < P.tex.width && y < P.tex.height };
+  }
+  function endStroke() {
+    const wasDrawing = P.drawing || P.pre;
+    P.drawing = false; P.last = null;
+    if (wasDrawing && P.changed && P.pre) {
+      P.undo.push(P.pre); if (P.undo.length > 80) P.undo.shift(); P.redo.length = 0;
+      rememberColor(P.color); afterEdit();
+    }
+    P.pre = null; P.changed = false; updateHistoryButtons();
+  }
+
+  P.cv.addEventListener('pointerdown', (e) => {
+    const mid = e.pointerType === 'mouse' && e.button === 1;   // middle mouse always pans
+    if (e.pointerType === 'mouse' && e.button !== 0 && !mid) return;
+    e.preventDefault(); P.cv.setPointerCapture(e.pointerId);
+    if (P.tool === 'hand' || P.space || mid) { P.pan = { x: e.clientX, y: e.clientY }; P.stage.classList.add('panning'); return; }
+    const p = pixelAt(e); if (!p.inside) return;
+    if (P.tool === 'picker') {
+      const d = P.tctx.getImageData(p.x, p.y, 1, 1).data;
+      if (d[3] > 0) { setColor(rgbToHex(d[0], d[1], d[2])); setTool(P.paintTool); }
+      return;
+    }
+    P.pre = snap(); P.changed = false;
+    if (P.tool === 'fill') { floodFill(p.x, p.y); endStroke(); return; }
+    P.drawing = true; P.last = p; putPixel(p.x, p.y); redraw(); liveSync();
+  });
+
+  P.cv.addEventListener('pointermove', (e) => {
+    if (P.pan) {   // drag to pan: scrolls the editor, and the sheet too when the canvas already fits
+      const dx = e.clientX - P.pan.x, dy = e.clientY - P.pan.y; P.pan = { x: e.clientX, y: e.clientY };
+      P.stage.scrollLeft -= dx;
+      const before = P.stage.scrollTop; P.stage.scrollTop -= dy;
+      const left = dy - (before - P.stage.scrollTop); if (left) editSheet.scrollTop -= left;
+      return;
+    }
+    const p = pixelAt(e);
+    P.hover = p.inside ? p : null;
+    $('paintPos').textContent = p.inside ? `${p.x}, ${p.y}` : '';
+    if (P.drawing && p.inside) { putLine(P.last.x, P.last.y, p.x, p.y); P.last = p; liveSync(); }
+    redraw();
+  });
+  const stopPointer = () => { P.pan = null; P.stage.classList.remove('panning'); endStroke(); };
+  P.cv.addEventListener('pointerup', stopPointer);
+  P.cv.addEventListener('pointercancel', stopPointer);
+  P.cv.addEventListener('pointerleave', () => { if (!P.drawing) { P.hover = null; $('paintPos').textContent = ''; redraw(); } });
+
+  /* -- Zoom, grid, guide toggles -- */
+  $('zoomIn').onclick = () => setScale(P.scale + 1, true);
+  $('zoomOut').onclick = () => setScale(P.scale - 1, true);
+  let wheelAcc = 0, wheelTimer = 0;
+  P.stage.addEventListener('wheel', (e) => {   // scroll wheel zooms toward the cursor (scroll up = in)
+    e.preventDefault();
+    wheelAcc += e.deltaMode === 1 ? e.deltaY * 33 : e.deltaMode === 2 ? e.deltaY * 100 : e.deltaY;
+    clearTimeout(wheelTimer); wheelTimer = setTimeout(() => { wheelAcc = 0; }, 180);
+    const steps = Math.min(3, Math.trunc(Math.abs(wheelAcc) / 90));   // one step per mouse notch; trackpads accumulate
+    if (!steps) return;
+    const dir = wheelAcc < 0 ? 1 : -1; wheelAcc = 0;
+    setScale(P.scale + dir * steps, true, { x: e.clientX, y: e.clientY });
+  }, { passive: false });
+  const toggle = (btn, key) => () => { P[key] = !P[key]; btn.classList.toggle('active', P[key]); btn.setAttribute('aria-pressed', P[key]); sizeCanvas(); redraw(); };
+  $('gridBtn').onclick = toggle($('gridBtn'), 'grid');
+  $('guideBtn').onclick = toggle($('guideBtn'), 'guide');
+  window.addEventListener('resize', () => {
+    if (!editOpen || P.userZoomed || !P.tex.width) return;
+    const n = fitScale(); if (n !== P.scale) setScale(n);
+  });
+
+  /* -- Keyboard shortcuts (while the editor is open and you're not typing) -- */
+  document.addEventListener('keydown', (e) => {
+    if (!editOpen || !P.open) return;
+    const t = e.target;
+    if (t && t.closest && t.closest('mdui-text-field, textarea, input:not([type="color"])')) return;
+    if (e.code === 'Space') {   // hold Space and drag to pan
+      e.preventDefault(); if (!e.repeat) { P.space = true; P.stage.classList.add('space'); } return;
+    }
+    const mod = e.ctrlKey || e.metaKey, k = e.key.toLowerCase();
+    if (mod && k === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
+    if (mod && k === 'y') { e.preventDefault(); redo(); return; }
+    if (mod || e.altKey) return;
+    const map = { b: 'pencil', e: 'eraser', g: 'fill', i: 'picker', h: 'hand' };
+    if (map[k]) { e.preventDefault(); setTool(map[k]); }
+  });
+
+  document.addEventListener('keyup', (e) => {
+    if (e.code === 'Space' && P.space) { e.preventDefault(); P.space = false; P.stage.classList.remove('space'); }
+  });
+
+  /* -- Show / hide the pixel editor (remembered between visits) -- */
+  try { P.open = localStorage.getItem('skinpack.paintOpen') !== '0'; } catch (e) { /* default: shown */ }
+  function applyPaintVisibility() {
+    document.querySelector('.edit-content').dataset.paint = P.open ? 'on' : 'off';
+    editSheet.classList.toggle('compact', !P.open);
+    $('paintToggle').classList.toggle('active', P.open); $('paintToggle').setAttribute('aria-pressed', P.open);
+    if (P.open) requestAnimationFrame(() => { if (!P.userZoomed && P.tex.width) { const n = fitScale(); if (n !== P.scale) setScale(n); } });
+  }
+  $('paintToggle').onclick = () => {
+    P.open = !P.open; try { localStorage.setItem('skinpack.paintOpen', P.open ? '1' : '0'); } catch (e) { /* ignore */ }
+    P.space = false; P.stage.classList.remove('space'); applyPaintVisibility();
+  };
+  applyPaintVisibility();
 
   /* ---------- Delete ---------- */
   $('delBtn').onclick = () => { closeEditSheet(); $('delDialog').open = true; };
@@ -1026,6 +1545,7 @@
     }
   }
 
+  syncPackLabel();
   renderGrid();
 </script>
 </body>
