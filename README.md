@@ -6,7 +6,7 @@ A fully client-side Minecraft Bedrock skin pack creation tool. Preview skins and
 
 - **3D skin grid** — Every skin is shown as a full 3D model with its name in a responsive grid. Click a skin for a live, rotatable/zoomable preview with a walking animation, plus rename / Slim toggle / delete.
 - **Manage multiple skins** — Select multiple PNGs to add at once. 
-- **Import by username** — Enter a Minecraft Java Edition username to download that skin and add it to the pack. The skin name is automatically set to the username.
+- **Import from NameMC links or usernames** — Click "Paste links" and paste one or more NameMC skin links (`namemc.com/skin/...`), NameMC profile links, or Java usernames (one per line). Usernames are resolved through Mojang's official API. Needs `node serve.mjs`; opened as a plain file, only usernames work (via a fallback service). If NameMC blocks the image download, save the skin and drag the PNG in instead.
 - **Automatic slim model detection** — Skin arm width (slim or classic) is detected when a skin is added, and the result can be corrected manually.
 - **Pixel editor** — The edit dialog includes a texture editor next to the 3D preview: pencil, eraser, fill (per body-part face), color picker, pan, undo/redo, scroll-wheel zoom (toward the cursor; pan with the Pan tool, middle mouse or Space + drag), a pixel grid and a body-part guide. Show or hide the editor with the "Pixel editor" button. Edits show on the 3D model live and are saved into the exported pack. Works with mouse, pen and touch.
 - **Per-skin settings** — Customize the display name and model type for each skin.
@@ -21,10 +21,12 @@ A fully client-side Minecraft Bedrock skin pack creation tool. Preview skins and
 
 ## Running it
 
-- **Easiest:** double-click `index.html`.
+- **Easiest:** double-click `index.html` (usernames only for import).
+- **Full features (NameMC links):** `node serve.mjs`, then open the printed address. Works in Termux too.
 
 ```
 node test-zip.mjs # Run the zip generator self-test
+node test-lookup.mjs # Run the skin lookup self-test (no network needed)
 ```
 
 ## Customizing the icons

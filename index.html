@@ -6,7 +6,7 @@
   <link rel="icon" type="image/png" href="./static/nekoskin.png">
   <link rel="apple-touch-icon" href="./static/nekoskin.png">
   <title>Minecraft Skin Pack Creator — Build .mcpack files online</title>
-  <meta name="description" content="Free online Minecraft Bedrock skin pack creator: 3D preview grid, Slim/Classic auto-detect, import by Java username, export .mcpack. Runs entirely in your browser — no uploads.">
+  <meta name="description" content="Free online Minecraft Bedrock skin pack creator: 3D preview grid, Slim/Classic auto-detect, import from NameMC links or Java usernames, export .mcpack. Runs entirely in your browser — no uploads.">
   <meta name="theme-color" content="#00000000">
   <script>
     (function () {
@@ -145,6 +145,7 @@
 
     /* The floating label of an outlined field pokes above the field; give the dialog body room so it is not clipped. */
     #userDialog mdui-text-field { display: block; width: 100%; margin-top: 12px; }
+    .user-hint { margin: 8px 0 0; font-size: 12px; opacity: .7; }
 
     /* ---- Pack popover (top-left) ---- */
     .pack-panel {
@@ -497,7 +498,7 @@
       </mdui-button>
       <mdui-button id="userBtn" variant="tonal">
         <svg slot="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-        <span class="btn-label">Fetch skin</span>
+        <span class="btn-label">Paste links</span>
       </mdui-button>
       <mdui-divider vertical style="height: 24px; margin: 0 4px;"></mdui-divider>
       <mdui-button-icon id="themeToggleBtn" aria-label="Toggle theme" title="Toggle theme">
@@ -513,7 +514,7 @@
         <p>Drag &amp; drop skin PNGs (or an existing <code>.mcpack</code>) anywhere on this page, or use the buttons below.</p>
         <div class="actions">
           <mdui-button id="emptyAdd" variant="filled">Choose files</mdui-button>
-          <mdui-button id="emptyUser" variant="outlined">Import from Java username</mdui-button>
+          <mdui-button id="emptyUser" variant="outlined">Import from NameMC link or username</mdui-button>
         </div>
         <ol class="steps"><li><span>1</span>Add skins</li><li><span>2</span>Name your pack</li><li><span>3</span>Export .mcpack</li></ol>
       </div>
@@ -639,11 +640,12 @@
     <mdui-button id="delConfirm" slot="action" variant="filled">Delete</mdui-button>
   </mdui-dialog>
 
-  <!-- Java username dialog -->
-  <mdui-dialog id="userDialog" headline="Import from Java username" close-on-overlay-click close-on-esc>
-    <mdui-text-field id="mcUser" variant="outlined" label="Java Edition username" placeholder="e.g. Notch"></mdui-text-field>
+  <!-- Links / username dialog -->
+  <mdui-dialog id="userDialog" headline="Import from NameMC links or usernames" close-on-overlay-click close-on-esc>
+    <mdui-text-field id="mcUser" variant="outlined" rows="5" label="NameMC skin/profile links or Java usernames" placeholder="One per line, e.g.&#10;https://namemc.com/skin/0123456789abcdef&#10;Notch"></mdui-text-field>
+    <p id="userHint" class="user-hint"></p>
     <mdui-button id="userCancel" slot="action" variant="text">Cancel</mdui-button>
-    <mdui-button id="fetchBtn" slot="action" variant="filled">Fetch skin</mdui-button>
+    <mdui-button id="fetchBtn" slot="action" variant="filled">Fetch skins</mdui-button>
   </mdui-dialog>
 
 <script>
@@ -1386,49 +1388,85 @@
     return { w: view.getUint32(16), h: view.getUint32(20) };
   }
 
-  /* ---------- Java username import ---------- */
+  /* ---------- NameMC link / username import ---------- */
+  // With `node serve.mjs` the local server resolves links and usernames (Mojang official API).
+  // Opened via file:// only plain usernames work, through a CORS-friendly fallback service.
   $('userBtn').onclick = $('emptyUser').onclick = () => {
+    $('userHint').textContent = location.protocol === 'file:'
+      ? 'Tip: run "node serve.mjs" to import NameMC links. Opened as a file, only usernames work.'
+      : 'Paste several at once, one per line. Ctrl+Enter to fetch.';
     $('userDialog').open = true;
     setTimeout(() => $('mcUser').focus(), 300);
   };
   $('userCancel').onclick = () => { $('userDialog').open = false; };
 
-  async function fetchSkin() {
-    const name = $('mcUser').value.trim().normalize('NFKC');
-    if (!name) { mdui.snackbar({ message: 'Please enter a Java username' }); return; }
-    $('fetchBtn').loading = true;
-    try {
-      const res = await fetch(`https://api.minetools.eu/uuid/${encodeURIComponent(name)}`);
-      if (!res.ok) throw new Error('Username lookup service is temporarily unavailable');
-      const info = await res.json();
-      if (!info.id || info.status === 'ERR') throw new Error(`User "${name}" not found`);
+  const PNG_MAGIC = [0x89, 0x50, 0x4e, 0x47];
+  const isPngBytes = (d) => PNG_MAGIC.every((b, i) => d[i] === b);
 
-      const profileRes = await fetch(`https://api.minetools.eu/profile/${info.id}`);
-      if (!profileRes.ok) throw new Error('Could not fetch profile for this user');
-      const profile = await profileRes.json();
-      const textureUrl = profile.decoded?.textures?.SKIN?.url;
-      if (!textureUrl) throw new Error(`${name} has not set a Java Edition skin`);
-      const secureTextureUrl = textureUrl.replace(/^http:\/\//, 'https://');
-      const imgRes = await fetch(secureTextureUrl);
-      if (!imgRes.ok) throw new Error(`Skin download failed (HTTP ${imgRes.status})`);
-      const imageData = new Uint8Array(await imgRes.arrayBuffer());
-      if (!(imageData[0] === 0x89 && imageData[1] === 0x50 && imageData[2] === 0x4e && imageData[3] === 0x47)) {
-        throw new Error('Skin server did not return a valid PNG');
+  async function fetchViaServer(token) {
+    const res = await fetch(`/api/skin?q=${encodeURIComponent(token)}`);
+    if (res.status === 404 && !(res.headers.get('content-type') || '').includes('json')) return null; // not our server
+    if (!res.ok) {
+      let msg = `Lookup failed (HTTP ${res.status})`;
+      try { msg = (await res.json()).error || msg; } catch (e) {}
+      throw new Error(msg);
+    }
+    const name = decodeURIComponent(res.headers.get('X-Skin-Name') || token);
+    return { data: new Uint8Array(await res.arrayBuffer()), name };
+  }
+
+  async function fetchViaFallback(name) {
+    if (!/^[A-Za-z0-9_]{1,16}$/.test(name)) throw new Error(`"${name.slice(0, 40)}": links need "node serve.mjs" (only usernames work when opened as a file)`);
+    const res = await fetch(`https://api.minetools.eu/uuid/${encodeURIComponent(name)}`);
+    if (!res.ok) throw new Error('Username lookup service is temporarily unavailable');
+    const info = await res.json();
+    if (!info.id || info.status === 'ERR') throw new Error(`User "${name}" not found`);
+    const profileRes = await fetch(`https://api.minetools.eu/profile/${info.id}`);
+    if (!profileRes.ok) throw new Error('Could not fetch profile for this user');
+    const profile = await profileRes.json();
+    const textureUrl = profile.decoded?.textures?.SKIN?.url;
+    if (!textureUrl) throw new Error(`${name} has not set a Java Edition skin`);
+    const imgRes = await fetch(textureUrl.replace(/^http:\/\//, 'https://'));
+    if (!imgRes.ok) throw new Error(`Skin download failed (HTTP ${imgRes.status})`);
+    return { data: new Uint8Array(await imgRes.arrayBuffer()), name: info.name || name };
+  }
+
+  async function fetchOne(token) {
+    let out = null;
+    if (location.protocol !== 'file:') {
+      try { out = await fetchViaServer(token); }
+      catch (e) { if (e instanceof TypeError) out = null; else throw e; }
+    }
+    if (!out) out = await fetchViaFallback(token);
+    if (!isPngBytes(out.data)) throw new Error('Skin server did not return a valid PNG');
+    return out;
+  }
+
+  async function fetchSkin() {
+    const tokens = [...new Set($('mcUser').value.split(/[\s,]+/).map((t) => t.trim()).filter(Boolean))];
+    if (!tokens.length) { mdui.snackbar({ message: 'Paste a NameMC link or a Java username' }); return; }
+    $('fetchBtn').loading = true;
+    let ok = 0; const failed = []; const failedTokens = [];
+    try {
+      for (const token of tokens) {
+        try {
+          const { data, name } = await fetchOne(token);
+          if (await addSkinData(data, name)) ok++;
+        } catch (err) {
+          failed.push(err.message || `${token}: import failed`);
+          failedTokens.push(token);
+        }
       }
-      const added = await addSkinData(imageData, name);
-      if (added) {
-        mdui.snackbar({ message: `Imported skin for ${name}` });
-        $('mcUser').value = '';
-        $('userDialog').open = false;
-      }
-    } catch (err) {
-      mdui.snackbar({ message: err.message || 'Import failed — check your network' });
     } finally {
       $('fetchBtn').loading = false;
     }
+    if (ok) mdui.snackbar({ message: `Imported ${ok} skin${ok !== 1 ? 's' : ''}` });
+    if (failed.length) mdui.snackbar({ message: failed.slice(0, 2).join(' · ') + (failed.length > 2 ? ` (+${failed.length - 2} more)` : '') });
+    if (!failed.length) { $('mcUser').value = ''; $('userDialog').open = false; }
+    else $('mcUser').value = failedTokens.join('\n');
   }
   $('fetchBtn').onclick = fetchSkin;
-  $('mcUser').addEventListener('keydown', (e) => { if (e.key === 'Enter') fetchSkin(); });
+  $('mcUser').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) fetchSkin(); });
 
   /* ---------- Slim detection ---------- */
   const detectCanvas = document.createElement('canvas');
