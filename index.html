@@ -267,7 +267,7 @@
     .edit-actions { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
     .edit-actions mdui-button { height: 36px; font-size: 13px; }
     .pill-toggle {
-      display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px 0 10px; border-radius: 18px;
+      display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px 0 10px; border-radius: 8px;
       border: 1px solid var(--ui-outline-variant); background: transparent; color: var(--ui-on-surface-variant);
       font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
       transition: background-color .12s, color .12s;
@@ -276,7 +276,9 @@
     .pill-toggle:hover { background: rgba(var(--mdui-color-on-surface), .08); }
     .pill-toggle.active { background: var(--ui-secondary-container); color: var(--ui-on-secondary-container); border-color: transparent; }
     .pill-toggle:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 2px; }
-    #delBtn { color: var(--ui-error); }
+    .pill-toggle.icon-only { width: 36px; padding: 0; justify-content: center; }
+    #delBtn { color: var(--ui-error); border-color: var(--ui-error); }
+    #delBtn:hover { background: rgba(var(--mdui-color-error), .10); }
 
     /* Desktop: [3D preview + name/model] | [pixel editor]. Phones: stacked, see the end of the editor CSS. */
     .edit-content {
@@ -350,7 +352,11 @@
     @media (max-width: 640px) {
       .btn-label { display: none; }
       .top-actions { gap: 4px; }
-      .top-actions mdui-button::part(button) { padding-inline: 10px; }
+      .top-actions mdui-button { width: 44px; min-width: 44px; }
+      .top-actions mdui-button::part(button) { padding: 0; width: 100%; justify-content: center; }
+      .top-actions mdui-button::part(label) { display: none; }
+      .top-actions mdui-button::part(icon) { margin: 0; }
+      .top-actions mdui-button svg { margin: 0 !important; }
       #packBtn::part(button) { padding-inline: 12px; }
 
       .edit-overlay { padding: 0; align-items: flex-end; }
@@ -440,6 +446,7 @@
     .zoom-ctrl .ptool { width: 32px; height: 32px; }
     .zoom-ctrl .ptool svg { width: 18px; height: 18px; }
     #zoomLabel { width: 40px; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+    @media (pointer: coarse) { .zoom-ctrl .ptool { width: 44px; height: 44px; } .zoom-ctrl .ptool svg { width: 22px; height: 22px; } #zoomLabel { width: 44px; font-size: 14px; } }
 
     /* Narrow screens: stacked, with the 3D preview pinned to the top so you can watch it while painting. */
     @media (max-width: 820px) {
@@ -461,7 +468,7 @@
     .edit-content[data-paint="off"] .viewer-wrapper, .edit-content[data-paint="off"] .canvas-container { min-height: min(440px, 50dvh); }
     @media (min-width: 821px) { .edit-sheet.compact { width: min(560px, 100%); } }
     @media (max-width: 820px) { .edit-content[data-paint="off"] .canvas-container { height: clamp(260px, 46dvh, 440px); } }
-    @media (max-width: 640px) { .pill-toggle { width: 36px; padding: 0; justify-content: center; } .pill-toggle span { display: none; } }
+    @media (max-width: 640px) { .pill-toggle { width: 36px; padding: 0; justify-content: center; border-radius: 8px; } .pill-toggle span { display: none; } }
 
     /* Short landscape screens: keep the toolbar and canvas on screen. */
     @media (max-height: 480px) {
@@ -548,13 +555,13 @@
       <div class="edit-head">
         <h2 id="editTitle">Edit skin</h2>
         <div class="edit-actions">
-          <button id="paintToggle" class="pill-toggle active" type="button" aria-pressed="true" aria-label="Pixel editor" title="Show or hide the pixel editor">
+          <button id="paintToggle" class="pill-toggle" type="button" aria-pressed="false" aria-label="Pixel editor" title="Show or hide the pixel editor">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37-1.34-1.34a.996.996 0 0 0-1.41 0L9 12.25 11.75 15l8.96-8.96a.996.996 0 0 0 0-1.41z"/></svg>
             <span>Pixel editor</span>
           </button>
-          <mdui-button-icon id="delBtn" aria-label="Delete skin" title="Delete skin">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"/></svg>
-          </mdui-button-icon>
+          <button id="delBtn" class="pill-toggle icon-only" type="button" aria-label="Delete skin" title="Delete skin">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"/></svg>
+          </button>
           <mdui-button id="editClose" variant="filled">Done</mdui-button>
         </div>
       </div>
@@ -609,6 +616,7 @@
             <span id="paintPos"></span>
             <div class="zoom-ctrl">
               <button class="ptool" id="zoomOut" title="Zoom out" aria-label="Zoom out"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13H5v-2h14v2z"/></svg></button>
+              <button class="ptool" id="zoomFit" title="Fit to screen" aria-label="Fit to screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h5v2H7v3H5V5zm9 0h5v5h-2V7h-3V5zM5 14h2v3h3v2H5v-5zm12 0h2v5h-5v-2h3v-3z"/></svg></button>
               <span id="zoomLabel">6×</span>
               <button class="ptool" id="zoomIn" title="Zoom in (or scroll wheel)" aria-label="Zoom in"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg></button>
             </div>
@@ -648,6 +656,12 @@
 
 <script>
   const $ = (id) => document.getElementById(id);
+  // One toast at a time: a new message replaces the old one, it times out quickly, and a tap dismisses it.
+  let lastToast = null;
+  function notify(message, ms = 3000) {
+    if (lastToast) { try { lastToast.open = false; } catch (e) {} }
+    lastToast = mdui.snackbar({ message, autoCloseDelay: ms, closeable: true, closeOnOutsideClick: true });
+  }
   const state = { skins: [], sel: -1, nextId: 1 };
   const current = () => state.skins[state.sel];
   const byId = (id) => state.skins.find((s) => s.id === id);
@@ -896,7 +910,7 @@
     const v = ensureLiveViewer();
     v.renderPaused = false;
     v.loadSkin(s.url, { model: s.slim ? 'slim' : 'default' })
-      .catch(() => mdui.snackbar({ message: 'Failed to load skin texture' }));
+      .catch(() => notify('Failed to load skin texture'));
   }
 
   function fillEditor() {
@@ -967,7 +981,7 @@
     tool: 'pencil', paintTool: 'pencil', color: '#000000',
     grid: true, guide: true,
     faces: [], undo: [], redo: [], pre: null, changed: false,
-    drawing: false, last: null, hover: null, pan: null, token: 0, space: false, open: true,
+    drawing: false, last: null, hover: null, pan: null, token: 0, space: false, open: false,
   };
   P.ctx = P.cv.getContext('2d');
   P.tctx = P.tex.getContext('2d', { willReadFrequently: true });
@@ -1206,7 +1220,35 @@
     P.pre = null; P.changed = false; updateHistoryButtons();
   }
 
+  /* Touch: one finger paints, two fingers pinch to zoom and drag to pan. */
+  const touches = new Map(); let pinch = null;
+  function cancelStroke() {   // a second finger landed: undo whatever the first finger just painted
+    if (P.pre && (P.drawing || P.changed)) { P.tctx.putImageData(P.pre, 0, 0); afterEdit(); }
+    P.drawing = false; P.last = null; P.pre = null; P.changed = false; P.hover = null; redraw(); updateHistoryButtons();
+  }
+  function pinchPoints() { const [a, b] = [...touches.values()]; return { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; }
+  function trackTouch(e) {
+    if (e.pointerType !== 'touch') return false;
+    if (e.type === 'pointerdown') {
+      touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (touches.size === 2) { cancelStroke(); P.pan = null; P.stage.classList.remove('panning'); const q = pinchPoints(); pinch = { d: q.d, scale: P.scale, x: q.x, y: q.y }; P.cv.setPointerCapture(e.pointerId); return true; }
+      return touches.size > 2;
+    }
+    if (!touches.has(e.pointerId)) return !!pinch;
+    touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pinch && touches.size === 2) {
+      const q = pinchPoints();
+      P.stage.scrollLeft -= q.x - pinch.x; P.stage.scrollTop -= q.y - pinch.y;   // two-finger drag pans
+      pinch.x = q.x; pinch.y = q.y;
+      setScale(Math.round(pinch.scale * q.d / pinch.d), true, { x: q.x, y: q.y });
+      return true;
+    }
+    return !!pinch;
+  }
+  function untrackTouch(e) { if (e.pointerType === 'touch') { touches.delete(e.pointerId); if (touches.size < 2) pinch = null; } }
+
   P.cv.addEventListener('pointerdown', (e) => {
+    if (trackTouch(e)) { e.preventDefault(); return; }
     const mid = e.pointerType === 'mouse' && e.button === 1;   // middle mouse always pans
     if (e.pointerType === 'mouse' && e.button !== 0 && !mid) return;
     e.preventDefault(); P.cv.setPointerCapture(e.pointerId);
@@ -1223,6 +1265,7 @@
   });
 
   P.cv.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'touch' && trackTouch(e)) return;
     if (P.pan) {   // drag to pan: scrolls the editor, and the sheet too when the canvas already fits
       const dx = e.clientX - P.pan.x, dy = e.clientY - P.pan.y; P.pan = { x: e.clientX, y: e.clientY };
       P.stage.scrollLeft -= dx;
@@ -1236,12 +1279,13 @@
     if (P.drawing && p.inside) { putLine(P.last.x, P.last.y, p.x, p.y); P.last = p; liveSync(); }
     redraw();
   });
-  const stopPointer = () => { P.pan = null; P.stage.classList.remove('panning'); endStroke(); };
+  const stopPointer = (e) => { if (e) untrackTouch(e); P.pan = null; P.stage.classList.remove('panning'); endStroke(); };
   P.cv.addEventListener('pointerup', stopPointer);
   P.cv.addEventListener('pointercancel', stopPointer);
   P.cv.addEventListener('pointerleave', () => { if (!P.drawing) { P.hover = null; $('paintPos').textContent = ''; redraw(); } });
 
   /* -- Zoom, grid, guide toggles -- */
+  $('zoomFit').onclick = () => { P.userZoomed = false; const n = fitScale(); if (n !== P.scale) setScale(n); };
   $('zoomIn').onclick = () => setScale(P.scale + 1, true);
   $('zoomOut').onclick = () => setScale(P.scale - 1, true);
   let wheelAcc = 0, wheelTimer = 0;
@@ -1282,8 +1326,7 @@
     if (e.code === 'Space' && P.space) { e.preventDefault(); P.space = false; P.stage.classList.remove('space'); }
   });
 
-  /* -- Show / hide the pixel editor (remembered between visits) -- */
-  try { P.open = localStorage.getItem('skinpack.paintOpen') !== '0'; } catch (e) { /* default: shown */ }
+  /* -- Show / hide the pixel editor (off by default; stays as you set it until the page reloads) -- */
   function applyPaintVisibility() {
     document.querySelector('.edit-content').dataset.paint = P.open ? 'on' : 'off';
     editSheet.classList.toggle('compact', !P.open);
@@ -1291,7 +1334,7 @@
     if (P.open) requestAnimationFrame(() => { if (!P.userZoomed && P.tex.width) { const n = fitScale(); if (n !== P.scale) setScale(n); } });
   }
   $('paintToggle').onclick = () => {
-    P.open = !P.open; try { localStorage.setItem('skinpack.paintOpen', P.open ? '1' : '0'); } catch (e) { /* ignore */ }
+    P.open = !P.open;
     P.space = false; P.stage.classList.remove('space'); applyPaintVisibility();
   };
   applyPaintVisibility();
@@ -1316,17 +1359,20 @@
   };
 
   /* ---------- Add skins ---------- */
+  let batch = null;   // while several files are added at once, collect results into one toast
   async function addSkinData(data, baseName) {
     const dim = imageSize(data);
     const square = dim.w === dim.h;
     const twoToOne = dim.w === dim.h * 2 && !(dim.w === 128 && dim.h === 64);
     if (!square && !twoToOne) {
-      mdui.snackbar({ message: `${baseName}: size ${dim.w}×${dim.h} is not supported — skipped. Only square or 2:1 layouts are allowed (128×64 is not supported).` });
+      if (batch) batch.skipped.push(baseName);
+      else notify(`${baseName}: size ${dim.w}×${dim.h} is not supported — skipped. Only square or 2:1 layouts are allowed (128×64 is not supported).`, 5000);
       return false;
     }
     const warning = !((dim.w === 64 && [32, 64].includes(dim.h)) || (dim.w === 128 && dim.h === 128));
     const slim = await detectSlim(data);
-    if (slim) mdui.snackbar({ message: `${baseName}: auto-detected Slim model` });
+    if (slim) { if (batch) batch.slim++; else notify(`${baseName}: auto-detected Slim model`); }
+    if (batch) batch.added++;
     const skin = {
       id: state.nextId++,
       name: baseName || `Skin ${state.skins.length + 1}`,
@@ -1342,14 +1388,24 @@
   $('addBtn').onclick = $('emptyAdd').onclick = () => $('fileInput').click();
 
   async function handleFiles(files) {
+    batch = { added: 0, slim: 0, skipped: [], other: [] };
+    try { await handleFilesInner(files); } finally {
+      const b = batch; batch = null;
+      const parts = [];
+      if (b.added) parts.push(`Added ${b.added} skin${b.added !== 1 ? 's' : ''}${b.slim ? ` (${b.slim} slim)` : ''}`);
+      if (b.skipped.length) parts.push(`${b.skipped.length} skipped (unsupported size): ${b.skipped.slice(0, 2).join(', ')}${b.skipped.length > 2 ? '…' : ''}`);
+      parts.push(...b.other);
+      if (parts.length) notify(parts.join(' · '), b.skipped.length || b.other.length ? 5000 : 3000);
+    }
+  }
+  async function handleFilesInner(files) {
     for (const file of files) {
       const data = new Uint8Array(await file.arrayBuffer());
       if (data[0] === 0x50 && data[1] === 0x4b) { await importPackBytes(data, file.name); continue; }
       let png = data;
       const base = file.name.replace(/\.(png|jpe?g|webp|gif|bmp)$/i, '');
       if (!(data[0] === 0x89 && data[1] === 0x50 && data[2] === 0x4e && data[3] === 0x47)) {
-        if (!file.type.startsWith('image/')) { mdui.snackbar({ message: `${file.name} is not an image — skipped` }); continue; }
-        mdui.snackbar({ message: `${file.name} is ${file.type || 'an unknown format'} — converted to PNG` });
+        if (!file.type.startsWith('image/')) { batch.other.push(`${file.name} is not an image — skipped`); continue; }
         png = await toPngBytes(file);
       }
       await addSkinData(png, base);
@@ -1395,7 +1451,7 @@
 
   async function fetchSkin() {
     const name = $('mcUser').value.trim().normalize('NFKC');
-    if (!name) { mdui.snackbar({ message: 'Please enter a Java username' }); return; }
+    if (!name) { notify('Please enter a Java username'); return; }
     $('fetchBtn').loading = true;
     try {
       const res = await fetch(`https://api.minetools.eu/uuid/${encodeURIComponent(name)}`);
@@ -1417,12 +1473,12 @@
       }
       const added = await addSkinData(imageData, name);
       if (added) {
-        mdui.snackbar({ message: `Imported skin for ${name}` });
+        notify(`Imported skin for ${name}`);
         $('mcUser').value = '';
         $('userDialog').open = false;
       }
     } catch (err) {
-      mdui.snackbar({ message: err.message || 'Import failed — check your network' });
+      notify(err.message || 'Import failed — check your network');
     } finally {
       $('fetchBtn').loading = false;
     }
@@ -1455,7 +1511,7 @@
   }
 
   async function exportPack() {
-    if (!state.skins.length) { mdui.snackbar({ message: 'Please add at least one skin first' }); return; }
+    if (!state.skins.length) { notify('Please add at least one skin first'); return; }
     const packName = $('packName').value.trim() || 'My Skin Pack';
     $('packName').value = packName;
     syncPackLabel();
@@ -1495,7 +1551,7 @@
     if ('ontouchstart' in window && navigator.canShare && navigator.canShare({ files: [mcpack] })) {
       try {
         await navigator.share({ files: [mcpack], title: packName });
-        mdui.snackbar({ message: 'Exported via system share — choose "Save to Files" or send it to Minecraft' });
+        notify('Exported via system share — choose "Save to Files" or send it to Minecraft');
         return;
       } catch (err) {
         if (err.name === 'AbortError') return;
@@ -1504,7 +1560,7 @@
     const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(mcpack), download: `${packName}.mcpack` });
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
-    mdui.snackbar({ message: `Exported ${packName}.mcpack — if the filename becomes .zip, rename it back to .mcpack` });
+    notify(`Exported ${packName}.mcpack — if the filename becomes .zip, rename it back to .mcpack`, 5000);
   }
   $('exportBtn2').onclick = exportPack;
 
@@ -1539,9 +1595,9 @@
       syncPackLabel();
       renderGrid();
       added.forEach(queueThumb);
-      mdui.snackbar({ message: `Imported ${added.length} skin${added.length !== 1 ? 's' : ''} (${state.skins.length} total)` });
+      notify(`Imported ${added.length} skin${added.length !== 1 ? 's' : ''} (${state.skins.length} total)`);
     } catch (err) {
-      mdui.snackbar({ message: `Import failed: ${filename} — ${err.message || 'could not parse file'}` });
+      notify(`Import failed: ${filename} — ${err.message || 'could not parse file'}`, 5000);
     }
   }
 
