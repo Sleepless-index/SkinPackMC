@@ -662,11 +662,7 @@
     if (lastToast) { try { lastToast.open = false; } catch (e) {} }
     lastToast = mdui.snackbar({ message, autoCloseDelay: ms, closeable: true, closeOnOutsideClick: true });
   }
-  const state = { skins: [], sel: -1, nextId: 1, pack: null };
-  // Pack identity. Minecraft tells packs apart by UUID, so keeping it (and raising the version on each
-  // export) makes a re-imported .mcpack update the old pack instead of installing a duplicate.
-  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  const validVersion = (v) => Array.isArray(v) && v.length === 3 && v.every((n) => Number.isInteger(n) && n >= 0);
+  const state = { skins: [], sel: -1, nextId: 1 };
   const current = () => state.skins[state.sel];
   const byId = (id) => state.skins.find((s) => s.id === id);
 
@@ -1522,15 +1518,10 @@
     const loc = packName.replace(/[^A-Za-z0-9_]/g, '_') || 'My_skin_pack';
 
     const desc = 'Hello!';
-    if (!state.pack) state.pack = { uuid: uuid(), moduleUuid: uuid(), version: [1, 0, 0], needsBump: false };
-    const pack = state.pack;
-    if (pack.needsBump) pack.version = [pack.version[0], pack.version[1], pack.version[2] + 1];
-    pack.needsBump = true;   // the next export is a newer version of this same pack
-    const ver = pack.version.join('.');
     const manifest = {
       format_version: 2,
-      header: { name: packName, description: desc, uuid: pack.uuid, version: [...pack.version] },
-      modules: [{ type: 'skin_pack', uuid: pack.moduleUuid, version: [...pack.version] }],
+      header: { name: packName, description: desc, uuid: uuid(), version: [1, 0, 0] },
+      modules: [{ type: 'skin_pack', uuid: uuid(), version: [1, 0, 0] }],
     };
     const skins = {
       skins: state.skins.map((s, i) => ({
@@ -1560,7 +1551,7 @@
     if ('ontouchstart' in window && navigator.canShare && navigator.canShare({ files: [mcpack] })) {
       try {
         await navigator.share({ files: [mcpack], title: packName });
-        notify(`Exported v${ver} via system share — choose "Save to Files" or send it to Minecraft`);
+        notify('Exported via system share — choose "Save to Files" or send it to Minecraft');
         return;
       } catch (err) {
         if (err.name === 'AbortError') return;
@@ -1569,7 +1560,7 @@
     const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(mcpack), download: `${packName}.mcpack` });
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
-    notify(`Exported ${packName}.mcpack (v${ver}) — if the filename becomes .zip, rename it back to .mcpack`, 5000);
+    notify(`Exported ${packName}.mcpack — if the filename becomes .zip, rename it back to .mcpack`, 5000);
   }
   $('exportBtn2').onclick = exportPack;
 
@@ -1586,18 +1577,6 @@
         const m = l.match(/^skin\.[^.]+\.([^=]+)=(.+)$/); if (m) names[m[1].trim()] = m[2].trim();
       });
       const offset = state.skins.length;
-      // Opening a pack into an empty project: keep its identity so the next export updates that pack.
-      if (!state.pack && offset === 0) {
-        const modUuid = (manifest.modules || []).find((m) => m.type === 'skin_pack')?.uuid;
-        if (UUID_RE.test(manifest.header?.uuid || '')) {
-          state.pack = {
-            uuid: manifest.header.uuid,
-            moduleUuid: UUID_RE.test(modUuid || '') ? modUuid : uuid(),
-            version: validVersion(manifest.header.version) ? [...manifest.header.version] : [1, 0, 0],
-            needsBump: true,
-          };
-        }
-      }
       const added = skins.skins.flatMap((sk, i) => {
         const data = map[sk.texture];
         if (!data) return [];
